@@ -9,11 +9,15 @@ class WEDXT1 : public QWidget
 public:
     explicit WEDXT1(QWidget *parent);
 
+signals:
+    void moveSignal(QMoveEvent *event);
 protected:
-    void paintEvent(QPaintEvent *event);
-
+    //void paintEvent(QPaintEvent *event);
+    void resizeEvent(QResizeEvent *event);
+    void moveEvent(QMoveEvent *event);
 private slots:
     void timeslots();
+    void moves(QMoveEvent *event);
 private:
     MSG msg;
 };

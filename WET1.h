@@ -16,7 +16,8 @@ public:
 
 public slots:
     void slotVolumeSet(int val);
-
+    void slotBtn1Click();
+    void slotBtn2Click();
 protected:
     void paintEvent(QPaintEvent *event);
 private:

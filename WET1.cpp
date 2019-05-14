@@ -8,8 +8,6 @@ WET1::WET1(QWidget *parent)
     :WEWidgetDecorator(parent)
 {
     mVolume = 20;
-
-
     mProgressBar = new QProgressBar(this);
     mProgressBar->setBaseSize(20, 0.3 * parent->height());
     mProgressBar->setRange(0,255);
@@ -39,6 +37,9 @@ WET1::WET1(QWidget *parent)
     hLayout->addWidget(mbtn3);
     mainLayout->addLayout(hLayout);
     setLayout(mainLayout);
+
+    connect(mbtn1, SIGNAL(clicked(bool)), this, SLOT(slotBtn1Click()));
+    connect(mbtn2, SIGNAL(clicked(bool)), this, SLOT(slotBtn2Click()));
 }
 
 void WET1::slotVolumeSet(int val)
@@ -48,10 +49,21 @@ void WET1::slotVolumeSet(int val)
     repaint();
 }
 
+void WET1::slotBtn1Click()
+{
+    mVolume+=10;
+    slotVolumeSet(mVolume);
+}
+
+void WET1::slotBtn2Click()
+{
+    mVolume-=10;
+    slotVolumeSet(mVolume);
+}
+
 void WET1::paintEvent(QPaintEvent *event)
 {
     QWidget::paintEvent(event);
-
 }
 
 
@@ -61,6 +73,7 @@ bool WET1::eventFilter(QObject *watched, QEvent *event)
     {
         if(event->type() == QEvent::Show)
         {
+            //qDebug()<<"chongzhi";
             sourceWidgetShowed();
         }
         else if(event->type() == QEvent::Move)
@@ -69,7 +82,6 @@ bool WET1::eventFilter(QObject *watched, QEvent *event)
         }
         else if(event->type() == QEvent::Resize)
         {
-            qDebug()<<"chongzhi";
             sourceWidgetResized();
         }
         else if(event->type() == QEvent::Hide)

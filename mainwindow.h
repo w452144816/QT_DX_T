@@ -16,6 +16,11 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+signals:
+    void moveSignal(QMoveEvent *event);
+protected:
+    void resizeEvent(QResizeEvent *event);
+    void moveEvent(QMoveEvent *event);
 private:
     Ui::MainWindow *ui;
     WET1 *mwidget1;

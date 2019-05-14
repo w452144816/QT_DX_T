@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <QApplication>
 #include <QEvent>
+#include <wedxt1.h>
 WEWidgetDecorator::WEWidgetDecorator(QWidget *parent)
     : QWidget(parent)
     , mSourceWidget(parent)
@@ -16,6 +17,7 @@ WEWidgetDecorator::WEWidgetDecorator(QWidget *parent)
     setBaseSize(parent->baseSize());
     mSourceWidget->installEventFilter(this);
 
+    connect((WEDXT1*)mSourceWidget,&WEDXT1::moveSignal,this,&WEWidgetDecorator::sourceWidgetMoved);
 //    connect(mSourceWidget,&PDNWidget::resized,this,&WEWidgetDecorator::sourceWidgetResized);
 //    connect(mSourceWidget,&PDNWidget::moved,this,&WEWidgetDecorator::sourceWidgetMoved);
 //    connect(mSourceWidget,&PDNWidget::showed,this,&WEWidgetDecorator::sourceWidgetShowed);
@@ -47,43 +49,6 @@ void WEWidgetDecorator::sourceWidgetHidden()
     this->setVisible(false);
 }
 
-/*
-bool WEWidgetDecorator::eventFilter(QObject *obj, QEvent *event)
-{
-    if(obj == mSourceWidget)
-    {
-        if(event->type() == QEvent::Resize)
-        {
-            QResizeEvent *rEvent = static_cast<QResizeEvent *>(event);
-            if(rEvent)
-            {
-                this->resize(rEvent->size().width(),rEvent->size().height());
-
-            }
-        }
-        else if(event->type() == QEvent::Move)
-        {
-            QMoveEvent *rEvent = static_cast<QMoveEvent *>(event);
-            if(rEvent)
-            {
-                this->move(mSourceWidget->mapToGlobal(QPoint(0,0)));
-                qDebug() << "mSourceWidget mapToGlobal:" << mSourceWidget->mapToGlobal(QPoint(0,0));
-                //this->move(0,0);
-            }
-        }
-        else if(event->type() == QEvent::Show)
-        {
-            QShowEvent *sEvent = static_cast<QShowEvent *>(event);
-            if(sEvent)
-            {
-                this->move(mSourceWidget->mapToGlobal(QPoint(0,0)));
-                qDebug() << "mSourceWidget mapToGlobal:" << mSourceWidget->mapToGlobal(QPoint(0,0));
-                //this->move(0,0);
-            }
-        }
-    }
-    return PDWidget::eventFilter(obj,event);
-}*/
 
 bool WEWidgetDecorator::nativeEvent(const QByteArray &eventType, void *message, long *result)
 {
@@ -121,6 +86,7 @@ bool WEWidgetDecorator::eventFilter(QObject *watched, QEvent *event)
         }
         else if(event->type() == QEvent::Move)
         {
+            qDebug() <<"ssssss";
             sourceWidgetMoved();
         }
         else if(event->type() == QEvent::Resize)
